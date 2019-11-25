@@ -1,6 +1,6 @@
 from dnn.modules import *
 
-def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 3000, print_cost=False):#lr was 0.009
+def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 3000, print_cost=False, lambd = 0, keep_prob = 1):#lr was 0.009
     """
     Implements a L-layer neural network: [LINEAR->RELU]*(L-1)->LINEAR->SIGMOID.
     
@@ -11,6 +11,8 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 30
     learning_rate -- learning rate of the gradient descent update rule
     num_iterations -- number of iterations of the optimization loop
     print_cost -- if True, it prints the cost every 100 steps
+    lambd -- regularization hyperparameter, scalar
+    keep_prob - probability of keeping a neuron active during drop-out, scalar.
     
     Returns:
     parameters -- parameters learnt by the model. They can then be used to predict.
@@ -29,7 +31,7 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 30
         AL, caches = L_model_forward(X, parameters)
         
         # Compute cost.
-        cost = compute_cost(AL, Y)
+        cost = compute_cost(AL, Y, layers_dims, parameters, lambd)
     
         # Backward propagation.
         grads = L_model_backward(AL, Y, caches)
